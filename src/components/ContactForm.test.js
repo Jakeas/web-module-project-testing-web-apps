@@ -149,8 +149,67 @@ test('renders "lastName is a required field" if an last name is not entered and 
 
 test('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
     render(<ContactForm/>) 
+        
+        // query for inputs
+    const firstNameInput = screen.getByLabelText(/first name*/i)
+    const lastNameInput = screen.getByLabelText(/last name*/i)
+    const emailInput = screen.getByLabelText(/email*/i)
+    const messageInput = screen.getByLabelText(/message/i)
+
+        // add text
+    userEvent.type(firstNameInput, 'Jacob')
+    userEvent.type(lastNameInput, 'Sierra')
+    userEvent.type(emailInput, 'Jake@email.com')
+    userEvent.type(messageInput, '')
+
+        // query for button
+    const button = screen.getByRole('button', {name: /submit/i})
+
+        // click button
+    userEvent.click(button)
+
+        // query for text
+    const firstText = await screen.getByText(/jacob/i)
+    const lastText = await screen.getByText(/sierra/i)
+    const emailText = await screen.getByText(/jake@email.com/i)
+    // const messageText = await screen.getByText()
+
+        // assert
+    expect(firstText).toBeInTheDocument()
+    expect(lastText).toBeInTheDocument()
+    expect(emailText).toBeInTheDocument()
+    // expect(messageInput).not.toBeInTheDocument()
 });
 
 test('renders all fields text when all fields are submitted.', async () => {
     render(<ContactForm/>) 
+        // query for inputs
+    const firstNameInput = screen.getByLabelText(/first name*/i)
+    const lastNameInput = screen.getByLabelText(/last name*/i)
+    const emailInput = screen.getByLabelText(/email*/i)
+    const messageInput = screen.getByLabelText(/message/i)
+
+        // add text
+    userEvent.type(firstNameInput, 'Jacob')
+    userEvent.type(lastNameInput, 'Sierra')
+    userEvent.type(emailInput, 'Jake@email.com')
+    userEvent.type(messageInput, 'This is my message test')
+
+        // query for button
+    const button = screen.getByRole('button', {name: /submit/i})
+
+        // click button
+    userEvent.click(button)
+
+        // query for text
+    const firstText = await screen.getByText(/jacob/i)
+    const lastText = await screen.getByText(/sierra/i)
+    const emailText = await screen.getByText(/jake@email.com/i)
+    const messageText = await screen.getByDisplayValue(/this is my message test/i)
+
+        // assert
+    expect(firstText).toBeInTheDocument()
+    expect(lastText).toBeInTheDocument()
+    expect(emailText).toBeInTheDocument()
+    expect(messageText).toBeInTheDocument()
 });
